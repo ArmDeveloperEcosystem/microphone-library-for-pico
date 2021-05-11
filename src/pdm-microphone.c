@@ -16,7 +16,7 @@
 #include "pico/microphone/pdm.h"
 
 #define PDM_DECIMATION 64
-#define PCM_BUFFER_SIZE 256
+#define PCM_BUFFER_SIZE 16
 
 static int dma_channel = -1;
 static uint8_t pdm_buffer[2][PCM_BUFFER_SIZE * (PDM_DECIMATION / 8)];
@@ -47,9 +47,9 @@ static void dma_handler()
 
     for (int i = 0; i < (PCM_BUFFER_SIZE / filter_stride); i++) {
 #if PDM_DECIMATION == 64
-        Open_PDM_Filter_64(in, out, 1, &pdm_filter);
+        Open_PDM_Filter_64(in, out, 16, &pdm_filter);
 #elif PDM_DECIMATION == 128
-        Open_PDM_Filter_128(in, out, 1, &pdm_filter);
+        Open_PDM_Filter_128(in, out, 16, &pdm_filter);
 #else
         #error "Unsupported PDM_DECIMATION value!"
 #endif
