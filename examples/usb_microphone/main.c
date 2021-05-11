@@ -73,12 +73,12 @@ int main(void)
   tusb_init();
 
   // Init values
-  sampFreq = 44100;
+  sampFreq = 16000;
   clkValid = 1;
 
   sampleFreqRng.wNumSubRanges = 1;
-  sampleFreqRng.subrange[0].bMin = 44100;
-  sampleFreqRng.subrange[0].bMax = 44100;
+  sampleFreqRng.subrange[0].bMin = 16000;
+  sampleFreqRng.subrange[0].bMax = 16000;
   sampleFreqRng.subrange[0].bRes = 0;
 
   while (1)
