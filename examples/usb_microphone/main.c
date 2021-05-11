@@ -30,6 +30,8 @@
 #include "bsp/board.h"
 #include "tusb.h"
 
+#include "pico/microphone/pdm.h"
+
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
 //--------------------------------------------------------------------+
@@ -60,10 +62,23 @@ audio_control_range_4_n_t(1) sampleFreqRng; 						// Sample frequency range stat
 
 // Audio test data
 uint16_t test_buffer_audio[CFG_TUD_AUDIO_TX_FIFO_SIZE/2];
-uint16_t startVal = 0;
 
 void led_blinking_task(void);
 void audio_task(void);
+
+struct pdm_microphone_config config = {
+    .pio = pio0,
+    .pio_sm = 0,
+    .sample_rate = 16000,
+    .gpio_clk = 2,
+    .gpio_data = 3,
+};
+
+void on_pdm_data(int16_t* samples, uint num_samples)
+{
+  memcpy(test_buffer_audio, samples, num_samples * sizeof(samples[0]));
+}
+
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -80,6 +95,9 @@ int main(void)
   sampleFreqRng.subrange[0].bMin = 16000;
   sampleFreqRng.subrange[0].bMax = 16000;
   sampleFreqRng.subrange[0].bRes = 0;
+
+  pdm_microphone_init(&config);
+  pdm_microphone_start(on_pdm_data);
 
   while (1)
   {
@@ -388,11 +406,6 @@ bool tud_audio_tx_done_post_load_cb(uint8_t rhport, uint16_t n_bytes_copied, uin
   (void) ep_in;
   (void) cur_alt_setting;
 
-  for (size_t cnt = 0; cnt < CFG_TUD_AUDIO_TX_FIFO_SIZE/2; cnt++)
-  {
-    test_buffer_audio[cnt] = startVal++;
-  }
-
   return true;
 }
 
@@ -400,7 +413,6 @@ bool tud_audio_set_itf_close_EP_cb(uint8_t rhport, tusb_control_request_t const 
 {
   (void) rhport;
   (void) p_request;
-  startVal = 0;
 
   return true;
 }
