@@ -14,9 +14,9 @@
 
 #include "OpenPDM2PCM/OpenPDMFilter.h"
 
-#include "pdm-microphone.pio.h"
+#include "pdm_microphone.pio.h"
 
-#include "pico/microphone/pdm.h"
+#include "pico/pdm_microphone.h"
 
 #define PDM_DECIMATION       64
 #define PDM_RAW_BUFFER_COUNT 2

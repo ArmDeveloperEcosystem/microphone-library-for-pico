@@ -5,8 +5,8 @@
  * 
  */
 
-#ifndef _PICO_MICROPHONE_PDM_H_
-#define _PICO_MICROPHONE_PDM_H_
+#ifndef _PICO_PDM_MICROPHONE_H_
+#define _PICO_PDM_MICROPHONE_H_
 
 #include "hardware/pio.h"
 

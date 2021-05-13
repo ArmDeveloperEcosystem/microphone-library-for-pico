@@ -8,7 +8,7 @@ add_executable(pico_microphone_usb
 
 target_include_directories(pico_microphone_usb PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(pico_microphone_usb PRIVATE tinyusb_device tinyusb_board pico_microphone)
+target_link_libraries(pico_microphone_usb PRIVATE tinyusb_device tinyusb_board pico_pdm_microphone)
 
 # # enable usb output, disable uart output
 # pico_enable_stdio_usb(pico_microphone_hello_pdm 1)

@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "pico/stdlib.h"
-#include "pico/microphone/pdm.h"
+#include "pico/pdm_microphone.h"
 #include "tusb.h"
 
 struct pdm_microphone_config config = {

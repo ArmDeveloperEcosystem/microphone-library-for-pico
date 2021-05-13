@@ -30,7 +30,7 @@
 #include "bsp/board.h"
 #include "tusb.h"
 
-#include "pico/microphone/pdm.h"
+#include "pico/pdm_microphone.h"
 
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
