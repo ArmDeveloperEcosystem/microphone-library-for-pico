@@ -67,18 +67,18 @@ void led_blinking_task(void);
 void audio_task(void);
 
 struct pdm_microphone_config config = {
-    .pio = pio0,
-    .pio_sm = 0,
-    .sample_rate = 16000,
-    .gpio_clk = 2,
-    .gpio_data = 3,
+  .gpio_clk = 2,
+  .gpio_data = 3,
+  .pio = pio0,
+  .pio_sm = 0,
+  .sample_rate = 16000,
+  .sample_buffer_size = CFG_TUD_AUDIO_TX_FIFO_SIZE/2,
 };
 
-void on_pdm_data(int16_t* samples, uint num_samples)
+void on_pdm_samples_ready()
 {
-  memcpy(test_buffer_audio, samples, num_samples * sizeof(samples[0]));
+  pdm_microphone_read(test_buffer_audio, CFG_TUD_AUDIO_TX_FIFO_SIZE/2);
 }
-
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -97,7 +97,8 @@ int main(void)
   sampleFreqRng.subrange[0].bRes = 0;
 
   pdm_microphone_init(&config);
-  pdm_microphone_start(on_pdm_data);
+  pdm_microphone_set_samples_ready_handler(on_pdm_samples_ready);
+  pdm_microphone_start();
 
   while (1)
   {

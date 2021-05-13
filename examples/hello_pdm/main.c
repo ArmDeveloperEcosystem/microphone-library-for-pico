@@ -13,21 +13,20 @@
 #include "tusb.h"
 
 struct pdm_microphone_config config = {
+    .gpio_clk = 2,
+    .gpio_data = 3,
     .pio = pio0,
     .pio_sm = 0,
     .sample_rate = 8000,
-    .gpio_clk = 2,
-    .gpio_data = 3,
+    .sample_buffer_size = 256,
 };
 
 int16_t sample_buffer[256];
 volatile int samples_read = 0;
 
-void on_pdm_data(int16_t* samples, uint num_samples)
+void on_pdm_samples_ready()
 {
-    memcpy(sample_buffer, samples, num_samples * sizeof(samples[0]));
-
-    samples_read = num_samples;
+  samples_read = pdm_microphone_read(sample_buffer, 256);
 }
 
 int main( void )
@@ -38,21 +37,31 @@ int main( void )
         tight_loop_contents();
     }
 
-    // printf("hello PDM microphone\n");
+    printf("hello PDM microphone\n");
 
-    pdm_microphone_init(&config);
-    pdm_microphone_start(on_pdm_data);
-
-    while (1) {
-        while (samples_read == 0) {
+    if (pdm_microphone_init(&config) < 0) {
+        printf("PDM microphone initialization failed!\n");
+        while (1) {
             tight_loop_contents();
         }
+    }
 
-        for (int i = 0; i < samples_read; i++) {
+    pdm_microphone_set_samples_ready_handler(on_pdm_samples_ready);
+    
+    if (pdm_microphone_start() < 0) {
+        printf("PDM microphone start failed!\n");
+        while (1) {
+            tight_loop_contents();
+        }
+    }
+
+    while (1) {
+        int sample_count = samples_read;
+        samples_read = 0;
+        
+        for (int i = 0; i < sample_count; i++) {
             printf("%d\n", sample_buffer[i]);
         }
-
-        samples_read = 0;
     }
 
     return 0;

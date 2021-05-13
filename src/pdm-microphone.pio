@@ -32,6 +32,5 @@ static inline void pdm_microphone_data_init(PIO pio, uint sm, uint offset, float
     sm_config_set_clkdiv(&c, clk_div);
     
     pio_sm_init(pio, sm, offset, &c);
-    pio_sm_set_enabled(pio, sm, true);
 }
 %}
