@@ -53,7 +53,11 @@
  
 #define SINCN            3
 #define DECIMATION_MAX 128
+#ifdef PICO_BUILD
+#define FILTER_GAIN     Param->Gain
+#else
 #define FILTER_GAIN     16
+#endif
  
 #define HTONS(A) ((((uint16_t)(A) & 0xff00) >> 8) | \
                  (((uint16_t)(A) & 0x00ff) << 8))
@@ -72,6 +76,9 @@ typedef struct {
   uint8_t Out_MicChannels;
   uint8_t Decimation;
   uint8_t MaxVolume;
+#ifdef PICO_BUILD
+  uint8_t Gain;
+#endif
   /* Private */
   uint32_t Coef[SINCN];
   uint16_t FilterLen;
