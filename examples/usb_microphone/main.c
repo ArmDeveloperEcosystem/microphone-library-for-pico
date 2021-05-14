@@ -46,5 +46,5 @@ void on_pdm_samples_ready()
 
 void on_usb_microphone_tx_ready()
 {
-  usb_microphone_write(sample_buffer, SAMPLE_BUFFER_SIZE);
+  usb_microphone_write(sample_buffer, sizeof(sample_buffer));
 }
