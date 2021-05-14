@@ -8,8 +8,8 @@
 .program pdm_microphone_data
 .side_set 1
 .wrap_target
-    nop side 1
     in pins, 1 side 0
+    push iffull noblock side 1
 .wrap
 
 % c-sdk {
@@ -26,7 +26,7 @@ static inline void pdm_microphone_data_init(PIO pio, uint sm, uint offset, float
     pio_gpio_init(pio, clk_pin);
     pio_gpio_init(pio, data_pin);
     
-    sm_config_set_in_shift(&c, false, true, 8);
+    sm_config_set_in_shift(&c, false, false, 8);
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
 
     sm_config_set_clkdiv(&c, clk_div);
