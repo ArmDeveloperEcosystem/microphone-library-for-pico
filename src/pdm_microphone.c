@@ -71,8 +71,8 @@ int pdm_microphone_init(const struct pdm_microphone_config* config) {
         config->pio_sm,
         pio_sm_offset,
         clk_div,
-        config->gpio_clk,
-        config->gpio_data
+        config->gpio_data,
+        config->gpio_clk
     );
 
     dma_channel_config dma_channel_cfg = dma_channel_get_default_config(pdm_mic.dma_channel);

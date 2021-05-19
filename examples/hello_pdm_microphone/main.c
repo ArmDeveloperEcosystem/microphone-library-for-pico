@@ -17,11 +17,11 @@
 
 // configuration
 const struct pdm_microphone_config config = {
-    // GPIO pin for the PDM CLK signal
-    .gpio_clk = 2,
-
     // GPIO pin for the PDM DAT signal
-    .gpio_data = 3,
+    .gpio_data = 2,
+
+    // GPIO pin for the PDM CLK signal
+    .gpio_clk = 3,
 
     // PIO instance to use
     .pio = pio0,

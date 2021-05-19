@@ -14,7 +14,7 @@
 
 % c-sdk {
 
-static inline void pdm_microphone_data_init(PIO pio, uint sm, uint offset, float clk_div, uint clk_pin, uint data_pin) {
+static inline void pdm_microphone_data_init(PIO pio, uint sm, uint offset, float clk_div, uint data_pin, uint clk_pin) {
     pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
     pio_sm_set_consecutive_pindirs(pio, sm, clk_pin, 1, true);
 

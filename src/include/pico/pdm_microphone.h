@@ -13,8 +13,8 @@
 typedef void (*pdm_samples_ready_handler_t)(void);
 
 struct pdm_microphone_config {
-    uint gpio_clk;
     uint gpio_data;
+    uint gpio_clk;
     PIO pio;
     uint pio_sm;
     uint sample_rate;

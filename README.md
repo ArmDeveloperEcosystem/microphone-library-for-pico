@@ -29,8 +29,8 @@ Capture audio from a microphone on your Raspberry Pi Pico or any RP2040 based bo
 | 3.3V | VCC |
 | GND | GND |
 | GND | SEL |
-| GPIO 2 | CLK |
-| GPIO 3 | DAT |
+| GPIO 2 | DAT |
+| GPIO 3 | CLK |
 
 GPIO pins are configurable in examples or API.
 
