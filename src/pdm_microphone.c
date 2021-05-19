@@ -64,7 +64,7 @@ int pdm_microphone_init(const struct pdm_microphone_config* config) {
 
     uint pio_sm_offset = pio_add_program(config->pio, &pdm_microphone_data_program);
 
-    float clk_div = clock_get_hz(clk_sys) / (config->sample_rate * PDM_DECIMATION * 2);
+    float clk_div = clock_get_hz(clk_sys) / (config->sample_rate * PDM_DECIMATION * 2.0);
 
     pdm_microphone_data_init(
         config->pio,
