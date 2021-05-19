@@ -60,7 +60,7 @@ int analog_microphone_init(const struct analog_microphone_config* config) {
         return -1;
     }
 
-    float clk_div = (clock_get_hz(clk_adc) / config->sample_rate) - 1;
+    float clk_div = (clock_get_hz(clk_adc) / (1.0 * config->sample_rate)) - 1;
 
     dma_channel_config dma_channel_cfg = dma_channel_get_default_config(analog_mic.dma_channel);
 
