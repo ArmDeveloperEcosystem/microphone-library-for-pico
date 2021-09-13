@@ -1,5 +1,6 @@
-# pico-microphone
-Capture audio from a microphone on your Raspberry Pi Pico or any RP2040 based board. 🎤
+# Microphone Library for Pico
+
+Capture audio from a microphone on your [Raspberry Pi Pico](https://www.raspberrypi.org/products/raspberry-pi-pico/) or any [RP2040](https://www.raspberrypi.org/products/rp2040/) based board. 🎤
 
 
 ## Hardware
@@ -42,7 +43,7 @@ See [examples](examples/) folder.
 ## Cloning
 
 ```sh
-git clone https://github.com/sandeepmistry/pico-microphone.git 
+git clone https://github.com/ArmDeveloperEcosystem/microphone-library-for-pico.git 
 ```
 
 ## Building
@@ -67,3 +68,6 @@ This project was created on behalf of the [Arm Software Developers](https://deve
 
 The [OpenPDM2PCM](https://os.mbed.com/teams/ST/code/X_NUCLEO_CCA02M1//file/53f8b511f2a1/Middlewares/OpenPDM2PCM/) library is used to filter raw PDM data into PCM. The [TinyUSB](https://github.com/hathach/tinyusb) library is used in the `usb_microphone` example.
 
+---
+
+Disclaimer: This is not an official Arm product.
