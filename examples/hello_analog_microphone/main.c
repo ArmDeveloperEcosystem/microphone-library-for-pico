@@ -68,6 +68,9 @@ int main( void )
     }
 
     while (1) {
+        // wait for new samples
+        while (samples_read == 0) { tight_loop_contents(); }
+
         // store and clear the samples read from the callback
         int sample_count = samples_read;
         samples_read = 0;
