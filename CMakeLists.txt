@@ -41,6 +41,21 @@ target_include_directories(pico_analog_microphone INTERFACE
 
 target_link_libraries(pico_analog_microphone INTERFACE pico_stdlib hardware_adc hardware_dma)
 
+add_library(pico_i2s_microphone INTERFACE)
+
+target_sources(pico_i2s_microphone INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/src/include/analog_microphone.c
+)
+
+target_include_directories(pico_i2s_microphone INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/src/include
+)
+
+target_link_libraries(pico_i2s_microphone INTERFACE pico_stdlib hardware_dma hardware_pio hardware_irq pico_multicore)
+
 add_subdirectory("examples/hello_analog_microphone")
 add_subdirectory("examples/hello_pdm_microphone")
 add_subdirectory("examples/usb_microphone")
+add_subdirectory("examples/analog_usb_microphone")
+add_subdirectory("examples/usb_i2s_microphone")
+
