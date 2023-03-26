@@ -44,11 +44,11 @@ target_link_libraries(pico_analog_microphone INTERFACE pico_stdlib hardware_adc 
 add_library(pico_i2s_microphone INTERFACE)
 
 target_sources(pico_i2s_microphone INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/src/include/analog_microphone.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/i2s_microphone.c
 )
 
 target_include_directories(pico_i2s_microphone INTERFACE
-    ${CMAKE_CURRENT_LIST_DIR}/src/include
+    ${CMAKE_CURRENT_LIST_DIR}/src
 )
 
 target_link_libraries(pico_i2s_microphone INTERFACE pico_stdlib hardware_dma hardware_pio hardware_irq pico_multicore)

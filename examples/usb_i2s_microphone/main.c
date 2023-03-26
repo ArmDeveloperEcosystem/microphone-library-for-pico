@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include "pico/stdlib.h"
-#include "pico/machine_i2s.c"
+#include "i2s_microphone.c"
 #include "pico/multicore.h"
 
 #include "usb_microphone.h"
@@ -28,7 +28,7 @@ void core1_entry() {
 		// // run the USB microphone task continuously
 		for(int i = 0; i < SAMPLE_BUFFER_SIZE; i++) {
 			machine_i2s_stream_read(i2s0, (void*)&buffer[0], I2S_RX_FRAME_SIZE_IN_BYTES);
-			sample_buffer[i] = buffer[0]/2000; // right channel is empty, play using $ cat /dev/ttyACM0 | xxd -r -p | aplay -r16000 -c1 -fS32_BE
+			sample_buffer[i] = buffer[0]/5000; // right channel is empty, play using $ cat /dev/ttyACM0 | xxd -r -p | aplay -r16000 -c1 -fS32_BE
 		}
 	}
 }
