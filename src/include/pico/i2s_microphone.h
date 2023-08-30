@@ -88,15 +88,16 @@ typedef struct _machine_i2s_obj_t {
     ring_buf_t ring_buffer;
     uint8_t *ring_buffer_storage;
     uint8_t flagHandler;
+    i2s_samples_ready_handler_t handlerEvent;
 } machine_i2s_obj_t;
 
 typedef void (*i2s_samples_ready_handler_t)(void);
 
-STATIC machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id, mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd, i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format, int32_t ring_buffer_len, int32_t i2s_rate);
+machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id, mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd, i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format, int32_t ring_buffer_len, int32_t i2s_rate);
 
-STATIC void machine_i2s_deinit(machine_i2s_obj_t *self);
+// void machine_i2s_deinit(machine_i2s_obj_t *self);
 
-STATIC void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler);
+void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler);
 
 
 #endif

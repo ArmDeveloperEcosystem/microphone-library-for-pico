@@ -47,12 +47,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "i2s_microphone.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/gpio.h"
 #include "hardware/dma.h"
 #include "hardware/irq.h"
+#include "pico/i2s_microphone.h"
 
 STATIC machine_i2s_obj_t* machine_i2s_obj[MAX_I2S_RP2] = {NULL, NULL};
 
@@ -598,12 +598,12 @@ STATIC void dma_irq1_handler(void) {
     dma_irq_handler(1);
 }
 
-STATIC void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler) {
+void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler) {
     machine_i2s_obj_t *self;
     self->handlerEvent = handler;
 }
 
-STATIC int machine_i2s_init_helper(machine_i2s_obj_t *self,
+int machine_i2s_init_helper(machine_i2s_obj_t *self,
               mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd,
               i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format,
               int32_t ring_buffer_len, int32_t i2s_rate) {
@@ -674,7 +674,7 @@ STATIC int machine_i2s_init_helper(machine_i2s_obj_t *self,
     return 0;
 }
 
-STATIC machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id,
+machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id,
               mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd,
               i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format,
               int32_t ring_buffer_len, int32_t i2s_rate) {
@@ -712,7 +712,7 @@ STATIC void machine_i2s_deinit(machine_i2s_obj_t *self) {
     }
 }
 
-STATIC int machine_i2s_stream_read(machine_i2s_obj_t *self, void *buf_in, size_t size) {
+int machine_i2s_stream_read(machine_i2s_obj_t *self, void *buf_in, size_t size) {
     if (self->mode != RX) {
         return -1;
     }
