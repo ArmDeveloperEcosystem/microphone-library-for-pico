@@ -15,7 +15,7 @@
 // The DMA buffer size was empirically determined.  It is a tradeoff between:
 // 1. memory use (smaller buffer size desirable to reduce memory footprint)
 // 2. interrupt frequency (larger buffer size desirable to reduce interrupt frequency)
-#define SIZEOF_DMA_BUFFER_IN_BYTES (512 * 2)
+#define SIZEOF_DMA_BUFFER_IN_BYTES (256 * 2)
 #define SIZEOF_HALF_DMA_BUFFER_IN_BYTES (SIZEOF_DMA_BUFFER_IN_BYTES / 2)
 #define I2S_NUM_DMA_CHANNELS (2)
 
@@ -88,15 +88,13 @@ typedef struct _machine_i2s_obj_t {
     ring_buf_t ring_buffer;
     uint8_t *ring_buffer_storage;
     uint8_t flagHandler;
+    i2s_samples_ready_handler_t handlerEvent;
 } machine_i2s_obj_t;
 
-typedef void (*i2s_samples_ready_handler_t)(void);
-
-STATIC machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id, mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd, i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format, int32_t ring_buffer_len, int32_t i2s_rate);
-
-STATIC void machine_i2s_deinit(machine_i2s_obj_t *self);
-
-STATIC void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler);
+machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id, mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd, i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format, int32_t ring_buffer_len, int32_t i2s_rate);
+int machine_i2s_stream_read(machine_i2s_obj_t *self, void *buf_in, size_t size);
+void machine_i2s_deinit(machine_i2s_obj_t *self);
+void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler);
 
 
 #endif

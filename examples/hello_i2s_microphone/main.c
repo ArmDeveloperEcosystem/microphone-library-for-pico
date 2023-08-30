@@ -19,7 +19,7 @@
 #define SCK 2
 #define WS 3 // needs to be SCK +1
 #define SD 6
-#define BPS 16 
+#define BPS 32 
 #define SAMPLE_RATE       16000
 #define FFT_SIZE          256
 #define SPECTRUM_SHIFT    4
@@ -29,13 +29,13 @@
 #define LEN_WAVE_HEADER 44
 
 // variables
-int16_t sample_buffer[SIZEOF_HALF_DMA_BUFFER_IN_BYTES];
+int16_t sample_buffer[INPUT_BUFFER_SIZE / 2];
 volatile int samples_read = 0;
 machine_i2s_obj_t* i2s0;
 typedef void (*I2SHandler) (machine_i2s_obj_t* i2s0);
 
 void on_i2s_mic_samples_ready(machine_i2s_obj_t* i2s0){
-    samples_read = machine_i2s_stream_read(i2s0, (void*)&sample_buffer, INPUT_BUFFER_SIZE * 2);
+    samples_read = machine_i2s_stream_read(i2s0, (void*)&sample_buffer, INPUT_BUFFER_SIZE);
     if(samples_read != 0){
         printf("Data OK\r\n");
     }
