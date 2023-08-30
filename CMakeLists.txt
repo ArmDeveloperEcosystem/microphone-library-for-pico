@@ -29,6 +29,21 @@ pico_generate_pio_header(pico_pdm_microphone ${CMAKE_CURRENT_LIST_DIR}/src/pdm_m
 target_link_libraries(pico_pdm_microphone INTERFACE pico_stdlib hardware_dma hardware_pio)
 
 
+add_library(pico_i2s_microphone INTERFACE)
+
+target_sources(pico_i2s_microphone INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/src/i2s_microphone.c
+)
+
+target_include_directories(pico_i2s_microphone INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/src/include
+)
+
+# pico_generate_pio_header(pico_pdm_microphone ${CMAKE_CURRENT_LIST_DIR}/src/pdm_microphone.pio)
+
+target_link_libraries(pico_i2s_microphone INTERFACE pico_stdlib hardware_dma hardware_pio)
+
+
 add_library(pico_analog_microphone INTERFACE)
 
 target_sources(pico_analog_microphone INTERFACE
@@ -41,6 +56,6 @@ target_include_directories(pico_analog_microphone INTERFACE
 
 target_link_libraries(pico_i2s_microphone INTERFACE pico_stdlib hardware_adc hardware_dma)
 
+add_subdirectory("examples/hello_pdm_microphone")
+add_subdirectory("examples/usb_microphone")
 add_subdirectory("examples/hello_i2s_microphone")
-# add_subdirectory("examples/hello_pdm_microphone")
-# add_subdirectory("examples/usb_microphone")

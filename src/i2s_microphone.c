@@ -582,9 +582,12 @@ STATIC void dma_irq_handler(uint8_t irq_index) {
         empty_dma(self, dma_buffer);
         dma_irqn_acknowledge_channel(irq_index, dma_channel);
         dma_channel_set_write_addr(dma_channel, dma_buffer, false);
+        if (self->handlerEvent) {
+            self->handlerEvent();
+        }
     }
     self->flagHandler = 1;
-    
+
 }
 
 STATIC void dma_irq0_handler(void) {
