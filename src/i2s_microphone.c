@@ -1,5 +1,5 @@
 /*
-  machine_i2s.c -
+  i2s_microphone.c -
     I2S digital audio input C library for the Raspberry Pi Pico RP2040
 
     Copyright (C) 2022 Sfera Labs S.r.l. - All rights reserved.
@@ -47,12 +47,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "pico/i2s_microphone.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/gpio.h"
 #include "hardware/dma.h"
 #include "hardware/irq.h"
-#include "pico/i2s_microphone.h"
 
 STATIC machine_i2s_obj_t* machine_i2s_obj[MAX_I2S_RP2] = {NULL, NULL};
 
@@ -558,6 +558,10 @@ STATIC void dma_deinit(machine_i2s_obj_t *self) {
     }
 }
 
+void i2s_microphone_set_samples_ready(i2s_samples_ready_handler_t handler, uint8_t I2S_ID){
+    machine_i2s_obj[I2S_ID]->samples_ready_handler = handler;
+}
+
 STATIC void dma_irq_handler(uint8_t irq_index) {
     int dma_channel = dma_map_irq_to_channel(irq_index);
     if (dma_channel == -1) {
@@ -582,11 +586,11 @@ STATIC void dma_irq_handler(uint8_t irq_index) {
         empty_dma(self, dma_buffer);
         dma_irqn_acknowledge_channel(irq_index, dma_channel);
         dma_channel_set_write_addr(dma_channel, dma_buffer, false);
-        if (self->handlerEvent) {
-            self->handlerEvent();
-        }
     }
-    self->flagHandler = 1;
+    
+    if (self->samples_ready_handler) {
+        self->samples_ready_handler();
+    }
 
 }
 
@@ -598,12 +602,7 @@ STATIC void dma_irq1_handler(void) {
     dma_irq_handler(1);
 }
 
-void i2s_microphone_set_samples_ready_handler(i2s_samples_ready_handler_t handler) {
-    machine_i2s_obj_t *self;
-    self->handlerEvent = handler;
-}
-
-int machine_i2s_init_helper(machine_i2s_obj_t *self,
+STATIC int machine_i2s_init_helper(machine_i2s_obj_t *self,
               mp_hal_pin_obj_t sck, mp_hal_pin_obj_t ws, mp_hal_pin_obj_t sd,
               i2s_mode_t i2s_mode, int8_t i2s_bits, format_t i2s_format,
               int32_t ring_buffer_len, int32_t i2s_rate) {
@@ -655,7 +654,7 @@ int machine_i2s_init_helper(machine_i2s_obj_t *self,
     self->format = i2s_format;
     self->rate = i2s_rate;
     self->ibuf = ring_buffer_len;
-    self->io_mode = BLOCKING;
+    self->io_mode = UASYNCIO;
 
     irq_configure(self);
     int err = pio_configure(self);
@@ -698,7 +697,6 @@ machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id,
     }
     return self;
 }
-
 
 
 STATIC void machine_i2s_deinit(machine_i2s_obj_t *self) {
