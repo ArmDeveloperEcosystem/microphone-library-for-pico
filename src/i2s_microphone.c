@@ -125,7 +125,6 @@ STATIC const pio_program_t pio_read_32 = {
 STATIC uint8_t dma_get_bits(i2s_mode_t mode, int8_t bits);
 STATIC void dma_irq0_handler(void);
 STATIC void dma_irq1_handler(void);
-STATIC void machine_i2s_deinit(machine_i2s_obj_t *self);
 
 // Ring Buffer
 // Thread safe when used with these constraints:
@@ -531,7 +530,7 @@ STATIC int dma_configure(machine_i2s_obj_t *self) {
                 dma_buffer,                                             // dest = DMA buffer
                 (void *)&self->pio->rxf[self->sm],                      // src = PIO RX FIFO
                 SIZEOF_HALF_DMA_BUFFER_IN_BYTES / (dma_get_bits(self->mode, self->bits) / 8),
-                true);
+                false);
         }
     }
 
@@ -654,7 +653,7 @@ STATIC int machine_i2s_init_helper(machine_i2s_obj_t *self,
     self->format = i2s_format;
     self->rate = i2s_rate;
     self->ibuf = ring_buffer_len;
-    self->io_mode = UASYNCIO;
+    self->io_mode = BLOCKING;
 
     irq_configure(self);
     int err = pio_configure(self);
@@ -699,7 +698,7 @@ machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id,
 }
 
 
-STATIC void machine_i2s_deinit(machine_i2s_obj_t *self) {
+void machine_i2s_deinit(machine_i2s_obj_t *self) {
     // use self->pio as in indication that I2S object has already been de-initialized
     if (self->pio != NULL) {
         pio_deinit(self);
