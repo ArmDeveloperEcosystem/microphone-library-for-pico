@@ -4,7 +4,6 @@
         "dreq.h": "c",
         "pio_instructions.h": "c",
         "type_traits": "cpp",
-        "i2s_microphone.h": "c",
-        "stdio.h": "c"
+        "i2s_microphone.h": "c"
     }
 }
