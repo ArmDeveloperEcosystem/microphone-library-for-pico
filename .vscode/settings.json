@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "pio.h": "c",
+        "dreq.h": "c",
+        "pio_instructions.h": "c",
+        "type_traits": "cpp",
+        "i2s_microphone.h": "c"
+    }
+}
