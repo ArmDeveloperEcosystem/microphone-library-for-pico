@@ -4,6 +4,7 @@
 #include "pico/i2s_microphone.h"
 #include "usb_microphone.h"
 
+
 #define SCK 2
 #define WS 3 // needs to be SCK +1
 #define SD 6

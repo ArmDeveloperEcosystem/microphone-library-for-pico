@@ -46,13 +46,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
 #include "pico/i2s_microphone.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/gpio.h"
 #include "hardware/dma.h"
 #include "hardware/irq.h"
+#include "pico/i2s_microphone.h"
+
 
 STATIC machine_i2s_obj_t* machine_i2s_obj[MAX_I2S_RP2] = {NULL, NULL};
 
@@ -696,7 +697,6 @@ machine_i2s_obj_t* machine_i2s_make_new(uint8_t i2s_id,
     }
     return self;
 }
-
 
 void machine_i2s_deinit(machine_i2s_obj_t *self) {
     // use self->pio as in indication that I2S object has already been de-initialized
