@@ -23,6 +23,7 @@
  *
  */
 
+#include "pico/unique_id.h"
 #include "tusb.h"
 
 /* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
@@ -111,13 +112,16 @@ uint8_t const * tud_descriptor_configuration_cb(uint8_t index)
 // String Descriptors
 //--------------------------------------------------------------------+
 
+// buffer to hold flash ID
+char serial[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+
 // array of pointer to string descriptors
 char const* string_desc_arr [] =
 {
     (const char[]) { 0x09, 0x04 }, 	// 0: is supported language is English (0x0409)
     "PaniRCorp",                   	// 1: Manufacturer
     "MicNode",              		// 2: Product
-    "123456",                      	// 3: Serials, should use chip ID
+    serial,                      	// 3: Serials, should use chip ID
     "UAC2",                 	 	// 4: Audio Interface
 };
 
@@ -137,6 +141,9 @@ uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid)
     chr_count = 1;
   }else
   {
+    // Get unique ID in string format
+    if (index == 3) pico_get_unique_board_id_string(serial, sizeof(serial));
+
     // Convert ASCII string into UTF-16
 
     if ( !(index < sizeof(string_desc_arr)/sizeof(string_desc_arr[0])) ) return NULL;
