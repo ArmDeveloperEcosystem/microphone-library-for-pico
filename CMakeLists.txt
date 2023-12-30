@@ -26,7 +26,7 @@ target_include_directories(pico_pdm_microphone INTERFACE
 
 pico_generate_pio_header(pico_pdm_microphone ${CMAKE_CURRENT_LIST_DIR}/src/pdm_microphone.pio)
 
-target_link_libraries(pico_pdm_microphone INTERFACE pico_stdlib hardware_dma hardware_pio)
+target_link_libraries(pico_pdm_microphone INTERFACE pico_stdlib hardware_dma hardware_pio pico_unique_id)
 
 
 add_library(pico_analog_microphone INTERFACE)
